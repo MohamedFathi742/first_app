@@ -17,4 +17,28 @@ export class UserService {
   async findAll() {
     return await this.user.find();
   }
+
+  async findOne(id: string) {
+    const user = await this.user.findOne({ where: { id: id } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
+  }
+
+  async update(id: string, updateUserDto) {
+    const user = await this.user.findOne({ where: { id: id } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return this.user.save({ ...user, ...updateUserDto });
+  }
+
+  async deleteUser(id: string) {
+    const user = await this.user.delete(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
+  }
 }
